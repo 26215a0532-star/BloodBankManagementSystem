@@ -1,0 +1,14 @@
+com\bloodbank\Donation.class
+com\bloodbank\AdminRepo.class
+com\bloodbank\DonorRepo.class
+com\bloodbank\Donor.class
+com\bloodbank\Api.class
+com\bloodbank\BloodRequest.class
+com\bloodbank\Inventory.class
+com\bloodbank\SecurityConfig.class
+com\bloodbank\Admin.class
+com\bloodbank\RequestRepo.class
+com\bloodbank\App.class
+com\bloodbank\DonationRepo.class
+com\bloodbank\AuthFilter.class
+com\bloodbank\InvRepo.class

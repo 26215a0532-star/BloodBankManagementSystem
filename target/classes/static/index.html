@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodBank Admin Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-card glass">
+            <div class="login-header">
+                <h2>BloodBank</h2>
+                <p>Admin Portal Login</p>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Enter username" value="admin" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter password" value="admin123" required>
+                </div>
+                <div id="login-error" class="error-text"></div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="sidebar glass">
+            <div class="sidebar-brand">
+                <h2>BloodBank</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-target="inventory">Inventory</a></li>
+                <li><a href="#" data-target="donors">Donors</a></li>
+                <li><a href="#" data-target="requests">Blood Requests</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn-outline">Logout</button>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <header class="top-nav glass">
+                <h1 id="page-title">Inventory Dashboard</h1>
+                <div class="user-profile">
+                    <button id="theme-toggle" class="btn-outline" style="border:none; font-size:1.2rem; margin-right: 1rem;" title="Toggle Theme">🌙</button>
+                    <span class="avatar">A</span>
+                    <span>Admin User</span>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Inventory View -->
+                <div id="view-inventory" class="view-section active">
+                    <div class="grid-cards" id="inventory-grid">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Donors View -->
+                <div id="view-donors" class="view-section">
+                    <div class="action-bar">
+                        <button class="btn-primary" onclick="app.showAddDonorModal()">+ Add New Donor</button>
+                    </div>
+                    <div class="table-container glass">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Blood Group</th>
+                                    <th>Age</th>
+                                    <th>Phone</th>
+                                    <th>Last Donation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="donors-table-body">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Requests View -->
+                <div id="view-requests" class="view-section">
+                    <div class="action-bar">
+                        <button class="btn-primary" onclick="app.showRequestBloodModal()">+ Request Blood</button>
+                    </div>
+                    <div class="table-container glass">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>Hospital</th>
+                                    <th>Group</th>
+                                    <th>Units</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requests-table-body">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Donor Modal -->
+    <div id="add-donor-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2>Add Donor</h2>
+                <span class="close" onclick="app.closeModal('add-donor-modal')">&times;</span>
+            </div>
+            <form id="add-donor-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="donor-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Age (18-65)</label>
+                        <input type="number" id="donor-age" min="18" max="65" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Blood Group</label>
+                        <select id="donor-bg" required>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone (10 digits)</label>
+                        <input type="text" id="donor-phone" pattern="\d{10}" required>
+                    </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Email</label>
+                        <input type="email" id="donor-email" required>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 1rem;">
+                    <button type="submit" class="btn-primary">Save Donor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Blood Modal -->
+    <div id="request-blood-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2>Request Blood</h2>
+                <span class="close" onclick="app.closeModal('request-blood-modal')">&times;</span>
+            </div>
+            <form id="request-blood-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Patient Name</label>
+                        <input type="text" id="req-patient" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Hospital Name</label>
+                        <input type="text" id="req-hospital" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Blood Group</label>
+                        <select id="req-bg" required>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Units Needed</label>
+                        <input type="number" id="req-units" min="1" required>
+                    </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Reason</label>
+                        <input type="text" id="req-reason">
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 1rem;">
+                    <button type="submit" class="btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Record Donation Modal -->
+    <div id="record-donation-modal" class="modal">
+        <div class="modal-content glass" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>Record Donation</h2>
+                <span class="close" onclick="app.closeModal('record-donation-modal')">&times;</span>
+            </div>
+            <form id="record-donation-form">
+                <input type="hidden" id="donation-donor-id">
+                <div class="input-group">
+                    <label>Units Donated</label>
+                    <input type="number" id="donation-units" min="1" value="1" required>
+                </div>
+                <div class="modal-footer" style="margin-top: 1rem;">
+                    <button type="submit" class="btn-primary">Confirm Donation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
